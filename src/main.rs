@@ -1,5 +1,3 @@
-#![feature(iterator_step_by)]
-
 extern crate bincode;
 #[macro_use]
 extern crate serde_derive;
@@ -53,10 +51,13 @@ fn write_wav(fname: &str, buff: Vec<i16>, dur: u32, sr: u16, ch: u8) {
     total_samples *= 2;
     let mut end_buffer: Vec<i16> = Vec::new();
 
-    for n in (0..total_samples as usize).step_by(2) {
+    let mut n: usize = 0;
+    while n < total_samples as usize {
         let val: i16 = buff[n / 2];
         end_buffer.push(val);
         end_buffer.push(val);
+
+        n += 2;
     }
 
     // 파일에 저장하기
